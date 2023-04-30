@@ -1,0 +1,10 @@
+set serveroutput on
+DECLARE
+	pl_rollno student_table.rollno%TYPE;
+	pl_gpa student_table.gpa%TYPE;
+BEGIN
+	pl_rollno:='&rollno';
+	select gpa into pl_gpa from student_table where rollno= pl_rollno;
+	DBMS_OUTPUT.PUT_LINE('GPA:' || pl_gpa);
+END;
+/
