@@ -80,20 +80,6 @@ SQL> desc emp
  EMP_ADDRESS                                        VARCHAR2(40)
  EMP_SALARY                                         NUMBER(7)
 
-SQL> UPDATE emp SET emp_salary=5,000 WHERE emp_no=(1,2,3);
-UPDATE emp SET emp_salary=5,000 WHERE emp_no=(1,2,3)
-                            *
-ERROR at line 1:
-ORA-01747: invalid user.table.column, table.column, or column specification
-
-
-SQL> UPDATE emp SET emp_salary=5000 WHERE emp_no=(1,2,3);
-UPDATE emp SET emp_salary=5000 WHERE emp_no=(1,2,3)
-                                           *
-ERROR at line 1:
-ORA-01797: this operator must be followed by ANY or ALL
-
-
 SQL> UPDATE emp SET emp_salary=5000 WHERE emp_no IN (1,2,3);
 
 3 rows updated.
@@ -113,12 +99,6 @@ SQL> select * from emp;
          4 Ram             Banglore                                       8000
          5 Joshua          Manipal                                        8000
          1 Mani            Manipal                                        5000
-
-SQL> rename table emp to emp1;
-rename table emp to emp1
-       *
-ERROR at line 1:
-ORA-00903: invalid table name
 
 
 SQL> rename emp to emp1;
