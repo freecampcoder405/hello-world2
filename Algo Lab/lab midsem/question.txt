@@ -1,0 +1,15 @@
+Find GCD of most occurring and least occurring elements of an Array
+
+Input: arr[] = {2, 2, 4, 4, 5, 5, 6, 6, 6, 6}
+Output: 2
+Explanation: The frequency of the elements in the above array is 
+freq(2) = 2, 
+freq(4) = 2, 
+freq(5) = 2, 
+freq(6) = 4, 
+The minimum frequency is 2 (of elements 2, 4, and 5). So 2 will be picked as the least among 2, 4, and 5. 
+The largest frequency is 4 (of element 6). 
+Hence GCD of 2 and 6 = gcd(2, 6) is 2.
+
+Input: arr[] = {3, 2, 2, 44, 44, 44, 44}
+Output: 1
