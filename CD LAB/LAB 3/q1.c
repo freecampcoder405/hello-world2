@@ -7,6 +7,7 @@ struct token
 	char token_name [100];
 	int index;
 	unsigned int row,col; //Line numbers.
+	char type[110];
 };
 char keywords[][20] = {
         "auto", "break", "case", "char", "const",
@@ -19,8 +20,6 @@ char keywords[][20] = {
 };
 
 int main() {
-    struct token tokens[100];
-    int numTokens=0;
     char c, buf[10];
     FILE *fp = fopen("q1stdin.c", "r");
     int row = 1, col = 1;
@@ -45,23 +44,17 @@ int main() {
 
         // Handle rel operators
         int i=0;
-        buf[i++] = c;
-	buf[i] = '\0'; 
+        buf[i++] = c; // Store the first character
+	buf[i] = '\0'; // Null-terminate the string
 
 	if (c == '=') {
     		c = fgetc(fp);
     		if (c == '=') {
         		buf[i++] = c;
         		buf[i] = '\0';
-        		strcpy(tokens[numTokens].token_name, buf);
-            		tokens[numTokens].row = row;
-            		tokens[numTokens].col = col;
-            		numTokens++;
+        		printf("<%s,%d,%d>", buf, row, col);
    		 } else {
-        		strcpy(tokens[numTokens].token_name, buf);
-            		tokens[numTokens].row = row;
-            		tokens[numTokens].col = col;
-            		numTokens++;
+        		printf("<%s,%d,%d>", buf, row, col);
    		 }
 	} else if (c == '<' || c == '>' || c == '!') {
     		c = fgetc(fp);
@@ -69,10 +62,7 @@ int main() {
        		 buf[i++] = c;
     		}
     		buf[i] = '\0';
-   		 strcpy(tokens[numTokens].token_name, buf);
-            		tokens[numTokens].row = row;
-            		tokens[numTokens].col = col;
-            		numTokens++;
+   		 printf("<%s,%d,%d>", buf, row, col);
 	} else {
    		 buf[i] = '\0';
 	}
@@ -102,20 +92,14 @@ int main() {
             int isKeyword = 0;
             for (int j = 0; j < numKeywords; j++) {
                 if (strcmp(buf, keywords[j]) == 0) {
-                    strcpy(tokens[numTokens].token_name, buf);
-            		tokens[numTokens].row = row;
-            		tokens[numTokens].col = col;
-            		numTokens++;
+                    printf("<KEYWORD,%d,%d,%s>\n", row, col, buf);
                     isKeyword = 1;
                     break;
                 }
             }
 
             if (!isKeyword) {
-                strcpy(tokens[numTokens].token_name, buf);
-            		tokens[numTokens].row = row;
-            		tokens[numTokens].col = col;
-            		numTokens++;
+                printf("<IDENTIFIER,%d,%d,%s>\n", row, col, buf);
             }
 
             col += i;
@@ -132,10 +116,7 @@ int main() {
                 c = fgetc(fp);
             }
             buf[i] = '\0';
-            strcpy(tokens[numTokens].token_name, buf);
-            		tokens[numTokens].row = row;
-            		tokens[numTokens].col = col;
-            		numTokens++;
+            printf("<NUMERICAL_CONSTANT,%d,%d,%s>\n", row, col, buf);
             col += i;
             continue;
         }
@@ -152,15 +133,10 @@ int main() {
             if (c == '"') {
                 buf[i++] = c;
                 buf[i] = '\0';
-                strcpy(tokens[numTokens].token_name, buf);
-            		tokens[numTokens].row = row;
-            		tokens[numTokens].col = col;
-            		numTokens++;
+                printf("<STRING_LITERAL,%d,%d,%s>\n", row, col, buf);
             } else {
-                strcpy(tokens[numTokens].token_name, buf);
-            		tokens[numTokens].row = row;
-            		tokens[numTokens].col = col;
-            		numTokens++;
+                // Handle unterminated string literal
+                printf("<UNTERMINATED_STRING_LITERAL,%d,%d,%s>\n", row, col, buf);
             }
             col += i;
             c = fgetc(fp); // Move past the closing double quote or EOF
@@ -170,9 +146,6 @@ int main() {
         col++;
         c = fgetc(fp);
 }
-    for (int j = 0; j < numTokens; j++) {
-        printf("<%s,%d,%d>\n", tokens[j].token_name, tokens[j].row, tokens[j].col);
-    }
 
     fclose(fp);
     return 0;
