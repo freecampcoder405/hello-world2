@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Form</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* CSS for the moving image */
+    #movingImage {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transition: left 2s linear;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <form id="orderForm">
+      <div class="form-group">
+        <label for="item1">Item 1</label>
+        <select class="form-control" id="item1">
+          <option value="0">Select Quantity</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <!-- Add more options if needed -->
+        </select>
+      </div>
+      <!-- Repeat the above block for other items -->
+      <!-- Example: -->
+      <!-- <div class="form-group">
+        <label for="item2">Item 2</label>
+        <select class="form-control" id="item2">
+          <option value="0">Select Quantity</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div> -->
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <div class="mt-5">
+      <table class="table" id="orderTable" style="display: none;">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data will be dynamically added here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Image to be moved -->
+  <img src="https://via.placeholder.com/150" alt="Moving Image" id="movingImage">
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#orderForm').submit(function(event) {
+        event.preventDefault();
+        displayOrder();
+      });
+
+      function displayOrder() {
+        var items = ['Item 1']; // Add more items if needed
+        var quantities = [];
+
+        // Iterate through each select element to get quantities
+        $('select').each(function() {
+          var quantity = $(this).val();
+          quantities.push(quantity);
+        });
+
+        // Display order in table
+        // $('#orderTable tbody').empty();
+        for (var i = 0; i < items.length; i++) {
+          if (quantities[i] > 0) {
+            $('#orderTable tbody').append('<tr><td>' + items[i] + '</td><td>' + quantities[i] + '</td></tr>');
+          }
+        }
+
+        // Show the table
+        $('#orderTable').show();
+
+        // Move the image
+        $('#movingImage').css({marginLeft: '+=200px'});
+      }
+    });
+  </script>
+</body>
+</html>
